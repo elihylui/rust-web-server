@@ -15,7 +15,7 @@ fn main() {
     let n_workers = 4;
     let pool = ThreadPool::new(n_workers);
 
-    for stream in listener.incoming() {
+    for stream in listener.incoming().take(2) {
         let stream = stream.unwrap();
 
         pool.execute(|| {
@@ -23,6 +23,8 @@ fn main() {
             println!("Connection established");
         });
     }
+
+    println!("Shutting down.")
 }
 
 fn handle_connection(mut stream: TcpStream) {
